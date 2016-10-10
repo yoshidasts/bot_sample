@@ -7,7 +7,7 @@ var SKU = mongoose.model('sku', schema);
 module.exports.getSKU = function(sku_code, callback){
     SKU.findOne({"sku_code": sku_code}, function(err, data){
     if(err){
-        nex(err);
+        next(err);
     }else{
         callback(data);
     }
