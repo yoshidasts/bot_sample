@@ -1,0 +1,22 @@
+{
+    "object":"page",
+    "entry":[
+        {
+            "id":100000000000000,
+            "time":1460507400109,
+            "messaging":[
+                {
+                    "sender":{"id":1000000000000000},
+                    "recipient":{"id":100000000000000},
+                    "timestamp":1460507400025,
+                    "message":
+                    {
+                        "mid":"mid.0000000000000:xxxxxxxxxxxxxxxxxx",
+                        "seq":5,
+                        "text":"<script>4946123456789</script>"
+                    }
+                }
+            ]
+        }
+    ]
+}

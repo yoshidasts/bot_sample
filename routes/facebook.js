@@ -18,15 +18,23 @@ router.post(''
         }else{
             // Set sku_code and move to next function
             res.params.sku_code = req.sanitize(req.body.entry[0].messaging[0].message.text);
-            next();
+            // Sanitized sku_code is empty
+            if(!res.params.sku_code){
+                res.status(400).send({"message": "Invalid SKU code"});
+            }else{
+                next();
+            }
         }
     }
     /* Find item by sku code */
     ,common.findItem
     /* Reply message to Facebook Messanger */
     ,function(req, res, next){
+        var postData = JSON.stringify({"message": "Item is not found"});
+        if(res.params.sku){
+            postData = JSON.stringify(res.params.sku);
+        }
         var options = config.get("facebook");
-        var postData = JSON.stringify(res.params.sku);
         options.headers["Content-Length"] = postData.length;
 
         var data = '';

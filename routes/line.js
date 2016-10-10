@@ -1,5 +1,6 @@
 var express = require('express');
 var common = require('./common');
+var config = require('config');
 var http = require('http');
 var router = express.Router();
 
@@ -16,15 +17,23 @@ router.post(''
         }else{
             // Set sku_code and move to next function
             res.params.sku_code = req.sanitize(req.body.events[0].message.text);
-            next();
+            // Sanitized sku_code is empty
+            if(!res.params.sku_code){
+                res.status(400).send({"message": "Invalid SKU code"});
+            }else{
+                next();
+            }
         }
     }
     /* Find item by sku code */
     ,common.findItem
     /* Reply message to LINE */
     ,function(req, res, next){
+        var postData = JSON.stringify({"message": "Item is not found"});
+        if(res.params.sku){
+            postData = JSON.stringify(res.params.sku);
+        }
         var options = config.get("line");
-        var postData = JSON.stringify(res.params.sku);
         options.headers["Content-Length"] = postData.length;
 
         var data = '';
