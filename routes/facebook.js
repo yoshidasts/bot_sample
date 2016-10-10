@@ -1,6 +1,8 @@
 var express = require('express');
 var common = require('./common');
+var config = require('config');
 var http = require('http');
+
 var router = express.Router();
 
 /* Query Item by Facebook Message */
@@ -15,7 +17,7 @@ router.post(''
             res.status(400).send({"message": "SKU code is empty"});
         }else{
             // Set sku_code and move to next function
-            res.params.sku_code = req.body.entry[0].messaging[0].message.text;
+            res.params.sku_code = req.sanitize(req.body.entry[0].messaging[0].message.text);
             next();
         }
     }
@@ -23,19 +25,9 @@ router.post(''
     ,common.findItem
     /* Reply message to Facebook Messanger */
     ,function(req, res, next){
+        var options = config.get("facebook");
         var postData = JSON.stringify(res.params.sku);
-        
-        var options = {
-            hostname: 'localhost',  //Facebook Message Server
-            port: 3000,             //Facebook Message Port
-            path: '/test/facebook', //Facebook Message Path
-            method: 'POST',
-            json:true,
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': postData.length
-            }
-        };
+        options.headers["Content-Length"] = postData.length;
 
         var data = '';
         var rq = http.request(options, function(rs){

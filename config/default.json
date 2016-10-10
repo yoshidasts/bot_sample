@@ -1,0 +1,25 @@
+{
+    // Facebook Message Server
+    "facebook": {
+        "hostname": "localhost",
+        "port":     3000,
+        "path":     "/test/facebook",
+        "method":   "POST",
+        "json":     true,
+        "headers":  {
+            "Content-Type": "application/json"
+        }
+    },
+
+    // LINE Message Server
+    "line": {
+        "hostname": "localhost",
+        "port":     3000,
+        "path":     "/test/line",
+        "method":   "POST",
+        "json":     true,
+        "headers":  {
+            "Content-Type": "application/json"
+        }
+    }
+}

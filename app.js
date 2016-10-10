@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var sanitizer = require('express-sanitizer');
 
 var line = require('./routes/line');
 var facebook = require('./routes/facebook');
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(sanitizer());
 
 app.use('/line', line);
 app.use('/facebook', facebook);

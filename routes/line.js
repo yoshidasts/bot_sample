@@ -15,7 +15,7 @@ router.post(''
             res.status(400).send({"message": "SKU code is empty"});
         }else{
             // Set sku_code and move to next function
-            res.params.sku_code = req.body.events[0].message.text;
+            res.params.sku_code = req.sanitize(req.body.events[0].message.text);
             next();
         }
     }
@@ -23,19 +23,9 @@ router.post(''
     ,common.findItem
     /* Reply message to LINE */
     ,function(req, res, next){
+        var options = config.get("line");
         var postData = JSON.stringify(res.params.sku);
-        
-        var options = {
-            hostname: 'localhost',  //LINE Message Server
-            port: 3000,             //LINE Message Port
-            path: '/test/line', //LINE Message Path
-            method: 'POST',
-            json:true,
-            headers: {
-                'Content-Type': 'application/json',
-                'Content-Length': postData.length
-            }
-        };
+        options.headers["Content-Length"] = postData.length;
 
         var data = '';
         var rq = http.request(options, function(rs){
